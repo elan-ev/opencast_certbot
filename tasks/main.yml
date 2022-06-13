@@ -1,12 +1,21 @@
 ---
 
-- name: activate epel repository
-  dnf:
-    name: epel-release
-
-- name: install certbot
-  dnf:
+- name: install certbot packages for Debian
+  package:
     name: certbot
+    state: present
+  when: ansible_os_family == 'Debian'
+
+- name: install certbot packages for RedHat
+  block:
+    - name: activate epel repository
+      dnf:
+        name: epel-release
+
+    - name: install certbot
+      dnf:
+        name: certbot
+  when: ansible_os_family == 'RedHat'
 
 - name: install certbot services
   template:
