@@ -2,6 +2,6 @@
 
 - name: Enable certbot
   ansible.builtin.systemd:
-    name: certbot-renew.timer
+    name: "{{ 'certbot-renew.timer' if ansible_os_family == 'RedHat' else 'certbot.timer' }}"
     enabled: true
     daemon_reload: true
